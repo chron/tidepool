@@ -5,6 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>Tidepool</title>
+    <script>
+      ;(function(w,d,s,u,k,n){
+        var q=function(){(q.q=q.q||[]).push(arguments)};
+        q.q=q.q||[];
+        q.settings={ key:k };
+        q.identify=function(){q("identify", arguments)};
+        q.group=function(){q("group", arguments)};
+        q.track=function(){q("track", arguments)};
+        q.page=function(){q("page", arguments)};
+        q.open=function(){q("open", arguments)};
+        w[n]=q;
+        var js=d.createElement(s);
+        js.async=1;
+        js.src=u;
+        d.head.appendChild(js);
+      })(window,document,"script","https://datum-dev.prestidge.dev/api/embed/sdk","datum_pk_dev_datum_dev","datumAnalytics");
+    </script>
   </head>
   <body>
     <div id="root"></div>
