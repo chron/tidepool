@@ -1,6 +1,17 @@
 import { createContext, use, useCallback, useEffect, useState, type ReactNode } from "react"
 import type { Team, User } from "../../worker/data"
 
+interface DatumAnalytics {
+  identify: (userId: string, traits: Record<string, string>) => void
+  group: (groupId: string, traits: Record<string, string>) => void
+}
+
+declare global {
+  interface Window {
+    datumAnalytics?: DatumAnalytics
+  }
+}
+
 export interface Session {
   user: User
   team: Team
@@ -37,6 +48,23 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     void refresh()
   }, [refresh])
+
+  useEffect(() => {
+    if (state.status !== "signed-in") return
+
+    const { user, team } = state.session
+    window.datumAnalytics?.identify(user.id, {
+      email: user.email,
+      name: user.name,
+      role: user.role,
+      plan: team.plan,
+      created_at: user.createdAt,
+    })
+    window.datumAnalytics?.group(team.id, {
+      name: team.name,
+      plan: team.plan,
+    })
+  }, [state])
 
   const signIn = useCallback(
     async (userId: string) => {
